@@ -1,11 +1,27 @@
 const { pool } = require('./config');
 
+const addMeals = (request, response) => {
+  const { foodName, kcal, servingQ, servingUnit, gramsUnit, userId, meal, units, kcalIntake, date } = request.body;
+
+  pool.query('INSERT INTO ingredients (food_name, kcal, serving_q, serving_unit, grams_unit) VALUES ($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT foodNameConstraint DO NOTHING', [foodName, kcal, servingQ, servingUnit, gramsUnit], error => {
+
+    pool.query('INSERT INTO meals (meal, units, kcal_intake, date, users_id, ingredients_id) VALUES ($1, $2, $3, $4, $5, (select id from ingredients where food_name = $6))', 
+    [meal, units, kcalIntake, date, userId, foodName], error => {
+      if (error) {
+        throw error
+      }
+      response.status(201).json({ status: 'success', message: 'Ingredient and meal added'})
+    });
+  });
+};
+
 const getUsers = (request, response) => {
-  pool.query('SELECT * FROM users', (error, results) => {
+  const id = request.params.id;
+  pool.query('SELECT date, name, daily_goal, kilograms FROM users INNER JOIN weight on users.id = weight.users_id WHERE users.id = $1 ORDER BY date DESC LIMIT 1', [id], (error, results) => {
     if (error) {
       throw error
     }
-    response.status(200).json(results.rows)
+    response.status(200).json((results.rows))
   })
 };
 
@@ -22,19 +38,7 @@ const addUser = (request, response) => {
   })
 };
 
-const addMeals = (request, response) => {
-  const { foodName, kcal, servingQ, servingUnit, gramsUnit, userId, meal, units, kcalIntake, date } = request.body;
-  pool.query('INSERT INTO ingredients (food_name, kcal, serving_q, serving_unit, grams_unit) VALUES ($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT constraintname DO NOTHING', [foodName, kcal, servingQ, servingUnit, gramsUnit], error => {
 
-    pool.query('INSERT INTO meals (meal, units, kcal_intake, date, users_id, ingredients_id) VALUES ($1, $2, $3, $4, $5, (select id from ingredients where food_name = $6))', 
-    [meal, units, kcalIntake, date, userId, foodName], error => {
-      if (error) {
-        throw error
-      }
-      response.status(201).json({ status: 'success', message: 'Ingredient and meal added'})
-    });
-  });
-};
 
 const getAllMeals = (request, response) => {
   const { userId, date } = request.body;
@@ -90,5 +94,3 @@ module.exports = {
   getUserCalories,
   getMeals
 }
-
-// 'SELECT * from meals INNER JOIN ingredients on meals.ingredients_id = ingredients.id WHERE meals.users_id = $1 AND meals.date = $2 AND meals.meal = $3';

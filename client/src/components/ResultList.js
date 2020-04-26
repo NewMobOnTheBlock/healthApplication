@@ -40,7 +40,7 @@ function addItemToDb(item, id, type, meal) {
     meal,
     units,
     kcalIntake: units * kcal,
-    date: '24-04-2020'
+    date: '2020-04-25'
    }
 
   const fetchObj = {

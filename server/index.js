@@ -11,9 +11,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors());
 
 app
-  .route('/users')
+  .route('/users/:id')
   .get(db.getUsers)
-  .post(db.addUser);
 // database - post - posts in ingredients, then in meals
 // get - all meals per date per user
 app
