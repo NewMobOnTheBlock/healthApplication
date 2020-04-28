@@ -7,6 +7,8 @@ const db = require ('./db-functions');
 const api = require('./api-functions')
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors());
