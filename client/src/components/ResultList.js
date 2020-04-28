@@ -27,7 +27,7 @@ function expandItem(element, type, updateContent) {
 }
 
 function addItemToDb(item, id, type, meal, date, userId) {
-  const { foodName, kcal, servingQ, servingUnit, gramsUnit } = item;
+  const { foodName, kcal, servingQ, servingUnit, gramsUnit, carbs } = item;
   console.log('resultlist > userid:', userId);
   const units = document.getElementById(id+type).value;
   console.log('id inside result list-additemtodb', userId)
@@ -37,11 +37,13 @@ function addItemToDb(item, id, type, meal, date, userId) {
     servingQ,
     servingUnit,
     gramsUnit,
+    carbs,
     userId,
     meal,
     units,
     kcalIntake: units * kcal,
-    date
+    date,
+    carbIntake: units * carbs
    }
   console.log('item object on resultlist-additemtodb', itemObject); 
   const fetchObj = {

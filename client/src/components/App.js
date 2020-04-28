@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-ro
 import { NavItem } from 'react-bootstrap';
 import { AppContext } from './context';
 import Dashboard from './Dashboard';
+import CarbGraph from './Carbs';
 import Analytics from './Analytics';
 import Home from './Home';
 import Login from './Login';
@@ -36,6 +37,7 @@ function App() {
             <UserInfo id={auth.id} />
             <Link to="/dashboard" className="sidebarlink">Dashboard</Link>
             <Link to="/analytics" className="sidebarlink">Analytics</Link>
+            <Link to="/carbs" className="sidebarlink">CarbGraph</Link>
             <Link to="/">
               <NavItem onClick={handleLogout}>Logout</NavItem>
             </Link>
@@ -58,6 +60,9 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/analytics">
           <Analytics id={auth.id} />
+        </Route>
+        <Route path="/carbs">
+          <CarbGraph id={auth.id} />
         </Route>
         <Route path="/dashboard">
           <Dashboard userId={auth.id} isAuth={auth.isAuth} goal={auth.goal} />

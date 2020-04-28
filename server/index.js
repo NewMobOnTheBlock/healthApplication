@@ -35,9 +35,14 @@ app
 app
   .route('/delmeals/:id')
   .delete(db.deleteMeal)
+  // get calories per user for all dates for graph
 app
-.route('/calorie/:id')
-.get(db.getUserCalories);
+  .route('/calorie/:id')
+  .get(db.getUserCalories);
+// get carbs per user for all dates for graph
+app
+  .route('/carb/:id')
+  .get(db.getUserCarbs);
 // database - get amount of calories per date per user
 app
   .route('/calories/:id/:date')

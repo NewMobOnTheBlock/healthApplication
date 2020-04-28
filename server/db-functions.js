@@ -74,11 +74,11 @@ const addWeight = (request, response) => {
 };
 
 const addMeals = (request, response) => {
-  const { foodName, kcal, servingQ, servingUnit, gramsUnit, userId, meal, units, kcalIntake, date } = request.body;
-  pool.query('INSERT INTO ingredients (food_name, kcal, serving_q, serving_unit, grams_unit) VALUES ($1, $2, $3, $4, $5) ON CONFLICT ON CONSTRAINT constraintname DO NOTHING', [foodName, kcal, servingQ, servingUnit, gramsUnit], error => {
+  const { foodName, kcal, servingQ, servingUnit, gramsUnit, carbs, userId, meal, units, kcalIntake, carbIntake, date } = request.body;
+  pool.query('INSERT INTO ingredients (food_name, kcal, serving_q, serving_unit, grams_unit, carbs) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT ON CONSTRAINT constraintname DO NOTHING', [foodName, kcal, servingQ, servingUnit, gramsUnit, carbs], error => {
 
-    pool.query('INSERT INTO meals (meal, units, kcal_intake, date, users_id, ingredients_id) VALUES ($1, $2, $3, $4, $5, (select id from ingredients where food_name = $6))', 
-    [meal, units, kcalIntake, date, userId, foodName], error => {
+    pool.query('INSERT INTO meals (meal, units, kcal_intake, carb_intake, date, users_id, ingredients_id) VALUES ($1, $2, $3, $4, $5, $6, (select id from ingredients where food_name = $7))', 
+    [meal, units, kcalIntake, carbIntake, date, userId, foodName], error => {
       if (error) {
         throw error
       }
@@ -129,6 +129,17 @@ const getUserCalories = (request, response) => {
   })
 };
 
+const getUserCarbs = (request, response) => {
+  const id = request.params.id;
+  const date = request.params.date
+  pool.query('SELECT date, sum(carb_intake) FROM meals GROUP BY date, users_id HAVING users_id= $1 ORDER BY date ASC', [id], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json((results.rows))
+  })
+};
+
 const getMeals = (request, response) => {
   const id = request.params.id;
   const meal = request.params.meal;
@@ -152,5 +163,6 @@ module.exports = {
   deleteMeal, 
   getDailyCalories,
   getUserCalories,
+  getUserCarbs,
   getMeals 
 }

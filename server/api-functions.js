@@ -24,6 +24,7 @@ function parseData(data) {
       servingUnit: food['serving_unit'],
       servingQ: food['serving_qty'],
       calories: food['nf_calories'],
+      carbs: food['nf_total_carbohydrate'],
       photo: food.photo,
     }
   });
@@ -39,6 +40,7 @@ function parseCommonItem(data) {
       servingQ: product['serving_qty'],
       gramsUnit: product['serving_weight_grams'],
       kcal: product['nf_calories'],
+      carbs: product['nf_total_carbohydrate'],
       photo: product.photo['thumb']
     }
 }
@@ -51,6 +53,7 @@ function parseBrandedItem(data) {
       servingQ: product['serving_qty'],
       gramsUnit: product['serving_weight_grams'],
       kcal: product['nf_calories'],
+      carbs: product['nf_total_carbohydrate'],
       photo: product.photo['thumb'],
       nixItemId: product['nix_item_id'],
       brandName: product['brand_name']
