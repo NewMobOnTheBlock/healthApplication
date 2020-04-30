@@ -39,9 +39,10 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage });
 
-app.post('/cloud', upload.single('fileupload'), (req, res) => {
-  cloudinary.uploader.upload(req.file.path, (result) => {
-    console.log(result)},{public_id: 'test3'})
+app.post('/cloud/:email', upload.single('fileupload'), (req, res) => {
+  const email = req.params.email;
+  cloudinary.uploader.upload(req.file.path, (result) => 
+  {console.log(result)},{public_id: email})
   })
 
 app

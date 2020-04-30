@@ -16,6 +16,11 @@ function Signup(props) {
     return (email.length > 0 && password.length > 0);
   }
 
+  // function sendPhoto(){
+  //   event.preventDefault();
+  //   fetch(`/cloud/${email}`)
+  // }
+
   function handleSubmit(event) {
     event.preventDefault();
     const obj = {
@@ -44,6 +49,7 @@ function Signup(props) {
   }
 
   return (
+    <div>
     <div className='signup'>
       <form onSubmit={handleSubmit}>
         <FormGroup controlId="email">
@@ -102,6 +108,12 @@ function Signup(props) {
           Signup
         </Button>
       </form>
+    </div>
+
+    <div> <form action={`/cloud/${email}`} enctype="multipart/form-data" method="POST"> 
+    <input type="file" name="fileupload" accept="image/*" />
+    <input type="submit" value="Upload Photo"/>
+    </form></div>
     </div>
     );
 }
