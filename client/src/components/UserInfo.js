@@ -55,6 +55,10 @@ function UserInfo(props) {
 
   return (
     <div>
+      <div className="userImg"><img 
+    src="https://res.cloudinary.com/heo8hwtja/image/upload/w_200,h_200,c_fill,g_face,r_max,f_auto/v1588248758/test3.png"
+    alt="new"
+    /></div>
       {users.map((user, index) => (
         <div className="userWrapper" key={index}>
           <p className="welcome">
@@ -77,9 +81,10 @@ function UserInfo(props) {
             <strong>BMI:</strong> {((user.kilograms) / (((user.height / 100)) * (user.height / 100))).toFixed(1)}
           </p>
           <p className="userGoal">
-            <strong>Daily Goal:</strong> {user.daily_goal} kcal
-            {/* <input type="image" className="adjust-btn" onClick={() => console.log('change goal')}
-              src="https://img.icons8.com/ios/50/000000/pencil-tip.png" alt="edit goal" /> */}
+          <form action="/cloud" enctype="multipart/form-data" method="POST"> 
+          <input type="file" name="fileupload" accept="image/*" />
+          <input type="submit" value="Upload Photo"/>
+          </form>
           </p>
         </div>
       ))}

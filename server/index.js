@@ -1,7 +1,9 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
-import path from 'path'
+const path = require('path');
+const multer = require('multer');
+const cloudinary = require('cloudinary');
 
 const db = require ('./db-functions');
 const api = require('./api-functions')
@@ -16,11 +18,31 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('../client/build'));
 
   // Express serve up index.html file if it doesn't recognize route
-  const path = require('path');
   // app.get('*', (req, res) => {
   //   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   // });
 }
+
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET
+});
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, '')
+  },
+  filename: function (req, file, cb) {
+      cb(null, file.originalname);
+  }
+})
+const upload = multer({ storage: storage });
+
+app.post('/cloud', upload.single('fileupload'), (req, res) => {
+  cloudinary.uploader.upload(req.file.path, (result) => {
+    console.log(result)},{public_id: 'test3'})
+  })
 
 app
   .route('/newusers')

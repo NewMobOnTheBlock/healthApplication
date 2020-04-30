@@ -190,6 +190,7 @@ const getMeals = (request, response) => {
   })
 };
 
+
 module.exports = {
   getUsers,
   getUser,
@@ -204,5 +205,5 @@ module.exports = {
   getUserProteins,
   getUserFat,
   getUserWeight,
-  getMeals 
+  getMeals
 }

@@ -1,0 +1,14 @@
+.graphAnalytics{
+    padding-top: 5%;
+    margin-left: 25%;
+    height: 800px;
+    width: 800px;
+  }
+
+  .graphLinks{
+      color: blue;
+  }
+
+  .graphLink{
+      color: yellow;
+  }
